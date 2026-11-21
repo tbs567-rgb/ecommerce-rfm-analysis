@@ -120,12 +120,16 @@ streamlit run ecommerce_rfm/app.py
 
 ### 路线 C：跑完整大数据链路
 
-见 [部署与启动说明.md](部署与启动说明.md)，五步约 20 分钟：
+见 [部署与启动说明.md](部署与启动说明.md)。环境全部随包自带（Python 3.13 / Hadoop 3.3.6 /
+Spark 4.3.0 / JDK 11+17 / MySQL 8.0.38），**不需要安装任何软件**，按顺序双击即可：
 
 ```
-装 MySQL → 5_restore_mysql.bat → 6_open_streamlit.bat
-        → 1_start_hdfs.bat    → 2_spark_smoketest.bat
+0_start_mysql.bat → 1_start_hdfs.bat → 2_spark_smoketest.bat
+                  → 3_run_full_etl.bat → 6_open_streamlit.bat
 ```
+
+`2_spark_smoketest.bat` 看到 `PASS` 说明 HDFS + Spark 链路通了；`3_run_full_etl.bat`
+跑完七项对账全部 `OK` 即为成功。数据库万一被改坏，用 `5_restore_mysql.bat` 重新导入。
 
 > ✅ 整包可以拷到任意盘符与目录：bat 用 `%~dp0`、Python 用 `__file__` 自动定位，
 > HDFS 的 XML 在每次启动时改写成本机实际路径，Spark/Hadoop 的 `JAVA_HOME` 也按自身位置推导。
