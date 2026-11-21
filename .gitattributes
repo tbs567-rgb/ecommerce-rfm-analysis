@@ -1,0 +1,19 @@
+# GitHub 上的换行符策略
+# 不加这个，Windows 的 CRLF 会让每次 diff 都显示"全文件修改"
+* text=auto
+
+# 脚本保持各自平台的原生换行
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sh  text eol=lf
+
+# 二进制文件不做换行转换，也不参与文本 diff
+*.png   binary
+*.jpg   binary
+*.mp4   binary
+*.docx  binary
+*.pptx  binary
+*.pdf   binary
+*.zip   binary
+*.pkl   binary
+*.xlsx  binary

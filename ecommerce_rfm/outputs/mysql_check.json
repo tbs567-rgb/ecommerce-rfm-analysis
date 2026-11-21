@@ -1,0 +1,12 @@
+{
+  "raw_rows": 541909,
+  "clean_rows": 536641,
+  "rfm_rows": 4334,
+  "clean_valid": 391153,
+  "valid_amount": 8737227.64,
+  "valid_orders": 18402,
+  "rfm_total_M": 8737227.64,
+  "rfm_F_sum": 18402,
+  "diff_raw_clean": 5268,
+  "all_ok": true
+}

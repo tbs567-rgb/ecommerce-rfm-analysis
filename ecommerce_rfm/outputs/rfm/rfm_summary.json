@@ -1,0 +1,25 @@
+{
+  "ref_date": "2011-12-10",
+  "n_customers": 4334,
+  "R": {
+    "min": 1,
+    "median": 51.0,
+    "max": 374,
+    "mean": 93.2
+  },
+  "F": {
+    "min": 1,
+    "median": 2.0,
+    "max": 206,
+    "mean": 4.2
+  },
+  "M": {
+    "min": 3.75,
+    "median": 662.57,
+    "max": 279138.02,
+    "mean": 2015.97,
+    "total": 8737227.64
+  },
+  "valid_orders": 18402,
+  "valid_rows": 391153
+}

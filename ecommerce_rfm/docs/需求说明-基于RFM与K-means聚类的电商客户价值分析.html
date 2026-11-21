@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>需求说明</title>
+<style>
+  body { margin: 0; }
+</style>
+</head>
+<body>
+  <h1 style="font-family: SimHei; font-size: 20pt; text-align: center; margin: 6pt 0 2pt 0;">需求说明</h1>
+  <p style="font-family: SimHei; font-size: 14pt; text-align: center; margin: 2pt 0 10pt 0; color: #1a5276;">基于 RFM 与 K-means 聚类的电商客户价值分析及交互式可视化</p>
+
+  <h2 style="font-family: SimHei; font-size: 14pt; margin: 8pt 0 4pt 0;">一、要回答的问题</h2>
+  <p style="font-family: SimSun; font-size: 12pt; margin: 2pt 0;">先确定三个问题，后续分析和图表都围绕它们展开：</p>
+  <ol style="font-family: SimSun; font-size: 12pt; margin: 2pt 0 6pt 0;">
+    <li style="margin: 2pt 0;">商家的销售情况有什么时间变化？</li>
+    <li style="margin: 2pt 0;">不同客户的购买频次、消费金额、最近购买时间有什么差异？</li>
+    <li style="margin: 2pt 0;">能否据此划分客户群体，提出对应运营建议？</li>
+  </ol>
+
+  <h2 style="font-family: SimHei; font-size: 14pt; margin: 8pt 0 4pt 0;">二、分析目标</h2>
+  <p style="font-family: SimSun; font-size: 12pt; margin: 2pt 0; text-indent: 24pt;">以电商交易明细为基础，完成数据获取、清洗、数据库存储、统计分析的完整流程；用 RFM 模型量化每位客户的近期活跃度、购买频次与消费能力，再用 K-means 聚类将客户划分为特征清晰的群体并给出运营建议，最终以交互式看板呈现分析结果。</p>
+
+  <h2 style="font-family: SimHei; font-size: 14pt; margin: 8pt 0 4pt 0;">三、数据来源</h2>
+  <table style="border-collapse: collapse; width: 100%; font-family: SimSun; font-size: 11pt;">
+    <tr>
+      <td style="border: 1pt solid #999999; padding: 3pt 6pt; width: 22%;">数据集</td>
+      <td style="border: 1pt solid #999999; padding: 3pt 6pt;">UCI Machine Learning Repository — Online Retail（公开免费）</td>
+    </tr>
+    <tr>
+      <td style="border: 1pt solid #999999; padding: 3pt 6pt;">获取方式</td>
+      <td style="border: 1pt solid #999999; padding: 3pt 6pt;">archive.ics.uci.edu/dataset/352，下载日期 2026-11-01，原始 Excel 存入 data/raw/ 保留不覆盖</td>
+    </tr>
+    <tr>
+      <td style="border: 1pt solid #999999; padding: 3pt 6pt;">数据规模</td>
+      <td style="border: 1pt solid #999999; padding: 3pt 6pt;">541,909 条商品交易明细 × 8 字段；时间范围 2010-12-01 至 2011-12-09（首尾两月不完整，趋势分析须剔除后比较）</td>
+    </tr>
+    <tr>
+      <td style="border: 1pt solid #999999; padding: 3pt 6pt;">字段说明</td>
+      <td style="border: 1pt solid #999999; padding: 3pt 6pt;">InvoiceNo 订单号｜StockCode 商品编码｜Description 品名｜Quantity 数量｜InvoiceDate 交易时间｜UnitPrice 单价｜CustomerID 客户编号｜Country 国家</td>
+    </tr>
+  </table>
+
+  <h2 style="font-family: SimHei; font-size: 14pt; margin: 8pt 0 4pt 0;">四、功能范围</h2>
+  <ol style="font-family: SimSun; font-size: 12pt; margin: 2pt 0 6pt 0;">
+    <li style="margin: 2pt 0;"><b>数据获取与清洗（Pandas + openpyxl）</b>：字段类型规范；客户编号缺失单独标记；取消订单、退货记录单独标记统计；单价数量异常分类检查；完全重复行去重；新增交易金额 = Quantity × UnitPrice；产出清洗日志与清洗前后对比表。</li>
+    <li style="margin: 2pt 0;"><b>数据库存储（MySQL 8.0，SQLAlchemy + PyMySQL 读写，DBeaver 管理）</b>：建立 transactions_raw、transactions_clean、customer_rfm、customer_segments 四张核心表，含客户编号、交易时间等索引，导入后行数核对。</li>
+    <li style="margin: 2pt 0;"><b>统计分析（Pandas + SQL）</b>：销售趋势、商品表现、客户消费分布、消费集中度、重复购买，每项按"问题 → 计算口径 → 结果 → 解释"输出。</li>
+    <li style="margin: 2pt 0;"><b>RFM 特征（Pandas）</b>：参考日期取数据中最后一个交易日的次日；F 按有效订单编号去重计数；结果写入 MySQL。</li>
+    <li style="margin: 2pt 0;"><b>K-means 聚类（scikit-learn）</b>：RFM 标准化后聚类，确定合适簇数，输出客户群体标签与对应运营建议，写入 customer_segments。</li>
+    <li style="margin: 2pt 0;"><b>交互式可视化</b>：月度销售趋势、商品排名、客户分群等图表联动，支持按群体筛选查看。</li>
+  </ol>
+
+  <h2 style="font-family: SimHei; font-size: 14pt; margin: 8pt 0 4pt 0;">五、交付物</h2>
+  <p style="font-family: SimSun; font-size: 12pt; margin: 2pt 0;">需求说明（本文档）；数据来源记录与字段说明表；清洗日志与前后对比表；建表 SQL 与导入脚本、表结构说明、导入核对截图；统计分析结论；客户 RFM 表；客户分群结果与运营建议；交互式可视化看板。</p>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "rows": 541909,
+  "cols": [
+    "InvoiceNo",
+    "StockCode",
+    "Description",
+    "Quantity",
+    "InvoiceDate",
+    "UnitPrice",
+    "CustomerID",
+    "Country"
+  ],
+  "dtypes": {
+    "InvoiceNo": "object",
+    "StockCode": "object",
+    "Description": "object",
+    "Quantity": "int64",
+    "InvoiceDate": "datetime64[us]",
+    "UnitPrice": "float64",
+    "CustomerID": "float64",
+    "Country": "str"
+  },
+  "date_min": "2010-12-01 08:26:00",
+  "date_max": "2011-12-09 12:50:00",
+  "na": {
+    "Description": 1454,
+    "CustomerID": 135080
+  },
+  "n_customers": 4372,
+  "n_invoices": 25900,
+  "n_products": 4070,
+  "n_cancelled": 9288,
+  "n_qty_le0": 10624,
+  "n_price_le0": 2517,
+  "n_duplicated": 5268
+}

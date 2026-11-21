@@ -1,0 +1,80 @@
+{
+  "raw_rows": 541909,
+  "clean_rows": 536641,
+  "dup_removed": 5268,
+  "no_customer_rows": 135037,
+  "negative_rows": 10587,
+  "special_rows": 2984,
+  "valid_rows": 391153,
+  "funnel": {
+    "clean": 536641,
+    "has_customer": 401604,
+    "positive_qty": 392732,
+    "non_special": 391187,
+    "valid": 391153
+  },
+  "revenue": 8737227.64,
+  "orders": 18402,
+  "customers": 4334,
+  "countries": 37,
+  "units": 5141787,
+  "date_min": "2010-12-01",
+  "date_max": "2011-12-09",
+  "months": 13,
+  "aov": 474.8,
+  "repeat_rate": 65.27,
+  "pareto_top20_share": 74.58,
+  "corr_M_F": 0.808,
+  "corr_M_AOV": 0.708,
+  "corr_R_F": -0.261,
+  "q4_premium_pct": 31.08,
+  "quarter_revenue": {
+    "1": 1588120.35,
+    "2": 1766948.29,
+    "3": 2165870.8,
+    "4": 3216288.2
+  },
+  "rfm_mean": {
+    "R": 93.23,
+    "F": 4.25,
+    "M": 2015.97
+  },
+  "rfm_median": {
+    "R": 51.0,
+    "F": 2.0,
+    "M": 662.57
+  },
+  "peak_month": "2011-11",
+  "peak_revenue": 1136534.0,
+  "uk_share": 82.9,
+  "silhouette_k3": 0.3387,
+  "segments": {
+    "重要价值客户": {
+      "n": 748,
+      "share_n": 17.26,
+      "R": 17.4,
+      "F": 13.5,
+      "M": 7920.55,
+      "revenue": 5924569.76,
+      "share_rev": 67.81
+    },
+    "一般发展客户": {
+      "n": 1710,
+      "share_n": 39.46,
+      "R": 44.1,
+      "F": 3.4,
+      "M": 1251.21,
+      "revenue": 2139569.24,
+      "share_rev": 24.49
+    },
+    "一般挽留客户": {
+      "n": 1876,
+      "share_n": 43.29,
+      "R": 168.2,
+      "F": 1.4,
+      "M": 358.79,
+      "revenue": 673088.64,
+      "share_rev": 7.7
+    }
+  }
+}

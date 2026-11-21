@@ -1,0 +1,20 @@
+{
+  "checks": {
+    "raw": 541909,
+    "clean": 536641,
+    "valid": 391153,
+    "valid_amount": 8737227.64,
+    "orders": 18402,
+    "rfm": 4334,
+    "f_sum": 18402
+  },
+  "expected": {
+    "raw": 541909,
+    "clean": 536641,
+    "valid": 391153,
+    "valid_amount": 8737227.64,
+    "orders": 18402,
+    "rfm": 4334
+  },
+  "all_ok": true
+}
