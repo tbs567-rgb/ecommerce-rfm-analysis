@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """12_spark_probe.py — 探测 Spark 4.3 从 MySQL 读回的表 schema（定 cast 依据）"""
+import os
 from pyspark.sql import SparkSession
 
 spark = SparkSession.builder.appName("probe").config("spark.ui.enabled", "false").getOrCreate()
 spark.sparkContext.setLogLevel("ERROR")
-URL = "jdbc:mysql://localhost:3306/ecommerce_rfm?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+MYSQL_PORT = int(os.environ.get("MYSQL_PORT", "3307"))
+URL = ("jdbc:mysql://localhost:%d/ecommerce_rfm?useSSL=false"
+       "&allowPublicKeyRetrieval=true&serverTimezone=UTC" % MYSQL_PORT)
 PROP = {"user": "root", "password": "123456", "driver": "com.mysql.cj.jdbc.Driver"}
 
 t = spark.read.format("jdbc").option("url", URL).options(**PROP).option("dbtable", "transactions_raw").load()

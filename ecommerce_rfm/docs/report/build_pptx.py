@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[3])
+
 """生成 19 页答辩 PPT（16:9，正文 ≥20pt）。"""
 import os
 
@@ -10,9 +14,9 @@ from pptx.oxml.ns import qn
 from pptx.util import Inches, Pt
 from PIL import Image
 
-BASE = r"D:\graduation_project\ecommerce_rfm\docs\report"
+BASE = _ROOT + r"\ecommerce_rfm\docs\report"
 FIG = os.path.join(BASE, "figs")
-OUT = r"D:\graduation_project\ecommerce_rfm\docs\答辩PPT-电商客户价值分析.pptx"
+OUT = _ROOT + r"\ecommerce_rfm\docs\答辩PPT-电商客户价值分析.pptx"
 
 NAVY = RGBColor(0x1F, 0x4E, 0x79)
 BLUE = RGBColor(0x2E, 0x75, 0xB6)

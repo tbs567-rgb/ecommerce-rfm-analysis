@@ -30,22 +30,23 @@ pip install -r ../requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
 ## 三、一键运行
 
-在项目根目录 `D:\graduation_project` 下双击：
+在运行包根目录（与 `0_start_mysql.bat` 同级的那一层）下双击：
 
 | 脚本 | 作用 |
 |---|---|
+| `0_start_mysql.bat` | 启动内置绿色版 MySQL（3307，必须先跑） |
 | `6_open_streamlit.bat` | 打开三页面交互分析系统（localhost:8501） |
 | `4_open_dashboard.bat` | 打开离线 HTML 看板（无网也能演示） |
 | `1_start_hdfs.bat` | 启动 HDFS（NameNode + DataNode） |
 | `2_spark_smoketest.bat` | Spark 读 HDFS 冒烟测试，输出 PASS 即链路正常 |
 | `3_run_full_etl.bat` | 跑完整 Spark ETL（清洗 + 统计 + RFM 写回 MySQL） |
-| `5_restore_mysql.bat` | 新机器上恢复数据库（123 MB 备份） |
+| `5_restore_mysql.bat` | 重新导入数据库备份 |
 | `9_stop_hdfs.bat` | 停止 HDFS |
 
 手动跑单个脚本：
 
 ```bash
-cd D:\graduation_project
+cd /d 运行包根目录
 python_env\Scripts\python.exe ecommerce_rfm\scripts\07_kmeans.py
 ```
 

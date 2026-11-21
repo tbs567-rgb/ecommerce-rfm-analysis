@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """07_kmeans.py — 第7步：K-means 聚类
 流程：
 1. 读 customer_rfm（4,334 位客户）
@@ -17,9 +21,9 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sqlalchemy import create_engine, text
 
-PROC = r"D:\graduation_project\ecommerce_rfm\data\processed\online_retail_clean.pkl"
-RFM = r"D:\graduation_project\ecommerce_rfm\outputs\rfm\customer_rfm.csv"
-OUT = r"D:\graduation_project\ecommerce_rfm\outputs\segments"
+PROC = _ROOT + r"\ecommerce_rfm\data\processed\online_retail_clean.pkl"
+RFM = _ROOT + r"\ecommerce_rfm\outputs\rfm\customer_rfm.csv"
+OUT = _ROOT + r"\ecommerce_rfm\outputs\segments"
 os.makedirs(OUT, exist_ok=True)
 
 rfm = pd.read_csv(RFM)
@@ -87,7 +91,8 @@ rfm_out.to_csv(os.path.join(OUT, "customer_segments.csv"), index=False)
 prof.to_csv(os.path.join(OUT, "cluster_summary.csv"), index=False)
 
 # ---- 写 MySQL ----
-engine = create_engine("mysql+pymysql://root:123456@localhost:3306/ecommerce_rfm?charset=utf8mb4")
+_PORT = int(os.environ.get("MYSQL_PORT", "3307"))   # 随包绿色版 MySQL 默认 3307
+engine = create_engine("mysql+pymysql://root:123456@localhost:%d/ecommerce_rfm?charset=utf8mb4" % _PORT)
 with engine.begin() as c:
     c.execute(text("""CREATE TABLE IF NOT EXISTS customer_segments (
       customer_id INT PRIMARY KEY,
@@ -111,7 +116,7 @@ for r in chk:
 
 # ---- 聚类报告 ----
 share = prof.assign(m_share=(prof["M_sum"]/rfm["M"].sum()*100).round(1))
-with open(r"D:\graduation_project\ecommerce_rfm\outputs\cluster_report.md", "w", encoding="utf-8") as f:
+with open(_ROOT + r"\ecommerce_rfm\outputs\cluster_report.md", "w", encoding="utf-8") as f:
     f.write("# K-means 聚类报告（第7步）\n\n")
     f.write("## 方法\n- 输入：4,334 位客户的 R/F/M\n- 右偏处理：log1p → StandardScaler 标准化\n")
     f.write("- 选 k：k=3~5 网格，肘部法(SSE) + 轮廓系数，取轮廓系数最优 k=%d\n" % best)

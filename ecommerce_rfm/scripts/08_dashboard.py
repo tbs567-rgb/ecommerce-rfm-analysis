@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """08_dashboard.py — 第8步：交互式可视化看板
 Plotly 生成单文件自包含 HTML（内嵌 plotly.js，离线可开）：
 - KPI 卡片：销售额/客户/订单/复购率
@@ -14,8 +18,8 @@ import plotly.graph_objects as go
 import plotly.express as px
 import os
 
-OUT = r"D:\graduation_project\ecommerce_rfm\outputs"
-DASH = r"D:\graduation_project\ecommerce_rfm\outputs\dashboard"
+OUT = _ROOT + r"\ecommerce_rfm\outputs"
+DASH = _ROOT + r"\ecommerce_rfm\outputs\dashboard"
 os.makedirs(DASH, exist_ok=True)
 
 trend = pd.read_csv(os.path.join(OUT, "analysis", "monthly_trend.csv"))

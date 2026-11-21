@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """05_rfm.py — 第6步：计算 RFM 客户特征
 R = 参考日期 - 客户最近一次有效购买日期（天）
 F = 有效订单编号去重计数（按订单，不按明细行）
@@ -9,8 +13,8 @@ M = 有效购买金额求和
 import pandas as pd
 import os, json
 
-PROC = r"D:\graduation_project\ecommerce_rfm\data\processed\online_retail_clean.pkl"
-OUT = r"D:\graduation_project\ecommerce_rfm\outputs\rfm"
+PROC = _ROOT + r"\ecommerce_rfm\data\processed\online_retail_clean.pkl"
+OUT = _ROOT + r"\ecommerce_rfm\outputs\rfm"
 os.makedirs(OUT, exist_ok=True)
 
 df = pd.read_pickle(PROC)

@@ -1,12 +1,34 @@
 @echo off
-chcp 65001 >nul
-title ç”µå•†å®¢æˆ·ä»·å€¼åˆ†æ - Streamlit äº¤äº’ç½‘é¡µ
-cd /d "D:\graduation_project"
+chcp 936 >nul 2>nul
+title µçÉÌ¿Í»§¼ÛÖµ·ÖÎö - Streamlit ½»»¥ÍøÒ³
+setlocal
+set "ROOT=%~dp0"
+cd /d "%ROOT%"
+
+set "STREAMLIT_BROWSER_GATHER_USAGE_STATS=false"
+
+if not exist "%USERPROFILE%\.streamlit\credentials.toml" (
+    if not exist "%USERPROFILE%\.streamlit" mkdir "%USERPROFILE%\.streamlit" >nul 2>nul
+    (
+        echo [general]
+        echo email = ""
+    ) > "%USERPROFILE%\.streamlit\credentials.toml" 2>nul
+)
+
 echo ============================================================
-echo   Streamlit äº¤äº’å¼åˆ†æç½‘é¡µï¼ˆè¯¾è®¾ç¬¬ 8 æ­¥ï¼‰
-echo   æµè§ˆå™¨å°†è‡ªåŠ¨æ‰“å¼€ï¼šhttp://localhost:8501
-echo   å…³é—­æœ¬çª—å£å³åœæ­¢æœåŠ¡
+echo   Streamlit ½»»¥Ê½·ÖÎöÍøÒ³£¨¿ÎÉèµÚ 8 ²½£©
+echo   ä¯ÀÀÆ÷½«×Ô¶¯´ò¿ª£ºhttp://localhost:8501
+echo   ¹Ø±Õ±¾´°¿Ú¼´Í£Ö¹·şÎñ
 echo ============================================================
 echo.
-"python_env\Scripts\streamlit.exe" run "ecommerce_rfm\app.py" --server.port 8501
+
+"%ROOT%mysql_portable\bin\mysqladmin.exe" -h 127.0.0.1 -P 3307 -uroot -p123456 ping >nul 2>&1
+if errorlevel 1 (
+    echo [ÌáÊ¾] Êı¾İ¿âÃ»Æô¶¯£¬Ò³Ãæ»áÏÔÊ¾Á¬½ÓÊ§°Ü¡£
+    echo        ÇëÏÈË«»÷ 0_start_mysql.bat£¬µÈËüÏÔÊ¾ OK ÔÙ»ØÀ´¡£
+    echo.
+)
+
+"%ROOT%python_env\Scripts\streamlit.exe" run "%ROOT%ecommerce_rfm\app.py" --server.port 8501
+
 pause

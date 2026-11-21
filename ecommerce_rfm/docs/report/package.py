@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[3])
+
 """打包提交材料：源码 zip + 论文/PPT/视频集中到「提交材料」目录。"""
 import glob
 import os
 import shutil
 import zipfile
 
-ROOT = r"D:\graduation_project"
+ROOT = _ROOT + r""
 PROJ = os.path.join(ROOT, "ecommerce_rfm")
 OUT = os.path.join(ROOT, "提交材料")
 os.makedirs(OUT, exist_ok=True)

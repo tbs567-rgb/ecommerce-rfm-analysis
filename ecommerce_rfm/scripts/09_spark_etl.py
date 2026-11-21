@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """09_spark_etl.py — Spark 分布式链路（替换/验证 Pandas 清洗-统计-RFM）
 链路：HDFS 原始 CSV → PySpark 清洗（口径同 03_clean.py）→ 写 MySQL
       → PySpark 统计（月度趋势/Top商品/客户分布/集中度/复购）→ customer_rfm（口径同 05_rfm.py）
 末尾与 Pandas 版基线逐项对账。
-运行：spark-submit --jars D:/graduation_project/bigdata/jars/mysql-connector-j-8.4.0.jar 09_spark_etl.py
+运行：python 11_spark_submit.py
+      （内部执行 spark-submit --jars <包根>/bigdata/jars/mysql-connector-j-8.4.0.jar 09_spark_etl.py）
 """
 import sys, json
 from pyspark.sql import SparkSession
@@ -11,9 +16,10 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import (StructType, StructField, StringType, IntegerType,
                                DoubleType, TimestampType)
 
-MYSQL_URL = ("jdbc:mysql://localhost:3306/ecommerce_rfm?useSSL=false"
+MYSQL_PORT = int(_os.environ.get("MYSQL_PORT", "3307"))
+MYSQL_URL = ("jdbc:mysql://localhost:%d/ecommerce_rfm?useSSL=false"
              "&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true"
-             "&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC")
+             "&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC" % MYSQL_PORT)
 MYSQL_PROP = {"user": "root", "password": "123456", "driver": "com.mysql.cj.jdbc.Driver"}
 SPECIAL = ["POST", "DOT", "M", "C2", "D", "S", "BANK CHARGES", "AMAZONFEE", "CRUK", "B", "ADJUST", "ADJUST2", "TEST001", "TEST002"]
 
@@ -66,7 +72,7 @@ print(f"[Spark] clean = {n_clean}, valid = {n_valid}, valid_amount = {valid_amt}
 
 # ===== 3. 写 MySQL（DROP 后由 Spark 自建表，createTableColumnTypes 显式类型）=====
 import pymysql
-c0 = pymysql.connect(host="localhost", port=3306, user="root", password="123456",
+c0 = pymysql.connect(host="localhost", port=MYSQL_PORT, user="root", password="123456",
                      database="ecommerce_rfm", charset="utf8mb4")
 with c0.cursor() as cur:
     for t in ["transactions_raw", "transactions_clean", "customer_rfm"]:
@@ -145,7 +151,7 @@ DDL_INDEX = [
     "CREATE INDEX idx_clean_valid ON transactions_clean(is_valid_purchase)",
     "ALTER TABLE customer_rfm ADD PRIMARY KEY (customer_id)",
 ]
-cx = pymysql.connect(host="localhost", port=3306, user="root", password="123456",
+cx = pymysql.connect(host="localhost", port=MYSQL_PORT, user="root", password="123456",
                      database="ecommerce_rfm", charset="utf8mb4")
 with cx.cursor() as cur:
     for stmt in DDL_INDEX:
@@ -172,7 +178,7 @@ for k, v0 in expected.items():
     mark = "OK " if (abs(got - v0) < 1 if isinstance(v0, float) else got == v0) else "FAIL"
     print(f"  [{mark}] {k}: Spark={got} vs Pandas基线={v0}")
 print(f"  [{'OK ' if ok else 'FAIL'}] 全部一致" )
-with open(r"D:\graduation_project\ecommerce_rfm\outputs\spark_check.json", "w", encoding="utf-8") as f:
+with open(_ROOT + r"\ecommerce_rfm\outputs\spark_check.json", "w", encoding="utf-8") as f:
     json.dump({"checks": checks, "expected": expected, "all_ok": bool(ok)}, f, ensure_ascii=False, indent=2)
 spark.stop()
 sys.exit(0 if ok else 2)

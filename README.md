@@ -61,21 +61,23 @@ flowchart LR
 ## 目录结构
 
 ```
-graduation_project/
+ecommerce-rfm-analysis/
 ├── README.md                       本文件
 ├── requirements.txt                Python 依赖（固定版本）
 ├── 部署与启动说明.md                新机部署 5 步 + 常见问题
-├── 1_start_hdfs.bat                HDFS 启停（1 / 9）
+├── 0_start_mysql.bat              启动内置绿色版 MySQL（3307）
+├── 1_start_hdfs.bat               HDFS 启停（1 / 9）
 ├── 2_spark_smoketest.bat           Spark 冒烟测试
 ├── 3_run_full_etl.bat              全链路 ETL
 ├── 4_open_dashboard.bat            静态看板（离线兜底）
 ├── 5_restore_mysql.bat             恢复数据库
 ├── 6_open_streamlit.bat            交互网页（推荐演示）
-├── 8_fill_info.bat                 一键填署名声成 PDF
+├── 8_fill_info.bat                 一键填署名生成 PDF
+├── 9_stop_hdfs.bat                 停止 HDFS
 └── ecommerce_rfm/                  项目本体
     ├── app.py                      Streamlit 三页面主程序（539 行）
     ├── .streamlit/config.toml      主题与端口
-    ├── scripts/                    01~15 按步骤编号的处理脚本
+    ├── scripts/                    01~14 按步骤编号的处理脚本 + pathguard 路径自检
     ├── docs/                       报告 / 答辩 PPT / 运行手册 / 表结构说明
     └── outputs/                    结果 CSV、三张截图、看板 HTML、演示录屏
 ```
@@ -125,8 +127,12 @@ streamlit run ecommerce_rfm/app.py
         → 1_start_hdfs.bat    → 2_spark_smoketest.bat
 ```
 
-> ⚠️ 本项目脚本里的路径硬编码为 `D:\graduation_project`。
-> 换到其他路径需同步修改 bat 与 Spark 配置，参考 `scripts/15_fix_paths.py`。
+> ✅ 整包可以拷到任意盘符与目录：bat 用 `%~dp0`、Python 用 `__file__` 自动定位，
+> HDFS 的 XML 在每次启动时改写成本机实际路径，Spark/Hadoop 的 `JAVA_HOME` 也按自身位置推导。
+> 唯一硬性要求：**路径必须是纯英文、不带空格**（MySQL 8.0 在中文路径下会启动失败）。
+>
+> 如果先跑了 `3_run_full_etl.bat` 而忘了开 HDFS，脚本会自己把 HDFS 拉起来再继续；
+> MySQL 没开会直接提示你先跑 `0_start_mysql.bat`，不会再抛一大段 Java 异常。
 
 ---
 

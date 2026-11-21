@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[3])
+
 """把正文内容组装为符合课程要求的 Word 报告。
 
 格式：A4；页边距上下 2.54cm、左右 3.17cm；正文宋体小四、1.5 倍行距；
@@ -24,8 +28,8 @@ from content_ch6_7 import BLOCKS as B67
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 FIG = os.path.join(BASE, "figs")
-SHOT = r"D:\graduation_project\ecommerce_rfm\outputs\screenshots"
-OUT = r"D:\graduation_project\ecommerce_rfm\docs\课程设计报告-基于RFM与K-means的电商客户价值分析.docx"
+SHOT = _ROOT + r"\ecommerce_rfm\outputs\screenshots"
+OUT = _ROOT + r"\ecommerce_rfm\docs\课程设计报告-基于RFM与K-means的电商客户价值分析.docx"
 
 SONG, HEI, MONO = "宋体", "黑体", "Consolas"
 BODY_PT = 12  # 小四

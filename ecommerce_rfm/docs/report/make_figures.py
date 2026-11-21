@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[3])
+
 """生成课程设计报告所需的统计指标与全部插图。
 
 所有数字均从 MySQL ecommerce_rfm 库实时计算，输出：
@@ -23,7 +27,7 @@ plt.rcParams["font.sans-serif"] = ["SimHei"]
 plt.rcParams["axes.unicode_minus"] = False
 plt.rcParams["font.size"] = 10
 
-BASE = r"D:\graduation_project\ecommerce_rfm\docs\report"
+BASE = _ROOT + r"\ecommerce_rfm\docs\report"
 FIG = os.path.join(BASE, "figs")
 os.makedirs(FIG, exist_ok=True)
 
@@ -98,7 +102,7 @@ by_country = q("""
 
 rfm = q("SELECT customer_id, R, F, M, first_purchase, last_purchase FROM customer_rfm")
 seg = q("SELECT customer_id, R, F, M, cluster, segment_label FROM customer_segments")
-ksel = pd.read_csv(r"D:\graduation_project\ecommerce_rfm\outputs\segments\k_selection.csv")
+ksel = pd.read_csv(_ROOT + r"\ecommerce_rfm\outputs\segments\k_selection.csv")
 
 # 客单价 / 复购 / 帕累托
 aov = float(valid.revenue) / float(valid.orders)

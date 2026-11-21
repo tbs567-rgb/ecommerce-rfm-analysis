@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """多线程分块下载器：绕开单连接限速（记忆经验：多连接速度可叠加）"""
 import os, sys, time, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 URL = "https://ghfast.top/https://github.com/dbeaver/dbeaver/releases/download/26.2.4/dbeaver-ce-26.2.4-windows-x86_64.zip"
-OUT = r"D:\graduation_project\bigdata\tools_dbeaver.zip"
+OUT = _ROOT + r"\bigdata\tools_dbeaver.zip"
 PART_DIR = OUT + ".parts"
 N_THREADS = 16
 CHUNK = 4 * 1024 * 1024  # 每片 4MB

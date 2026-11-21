@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """03_clean.py — 第3步：数据清洗
 规则（按需求方案）：
 1. 字段类型：InvoiceNo/StockCode/CustomerID 按标识符处理，InvoiceDate 转日期时间
@@ -16,9 +20,9 @@
 import pandas as pd
 import os, json
 
-RAW = r"D:\graduation_project\ecommerce_rfm\data\raw\Online Retail.xlsx"
-PROC = r"D:\graduation_project\ecommerce_rfm\data\processed"
-OUT = r"D:\graduation_project\ecommerce_rfm\outputs"
+RAW = _ROOT + r"\ecommerce_rfm\data\raw\Online Retail.xlsx"
+PROC = _ROOT + r"\ecommerce_rfm\data\processed"
+OUT = _ROOT + r"\ecommerce_rfm\outputs"
 os.makedirs(PROC, exist_ok=True)
 os.makedirs(OUT, exist_ok=True)
 

@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """06_mysql_load.py — 第4步：MySQL 建表并导入
 建三张表：transactions_raw / transactions_clean / customer_rfm
 （customer_segments 待第7步 K-means 聚类完成后写入）
@@ -8,8 +12,9 @@ import pandas as pd
 import pymysql, os, json, time
 from sqlalchemy import create_engine, text
 
-USER, PWD, HOST, PORT, DB = "root", "123456", "localhost", 3306, "ecommerce_rfm"
-OUT = r"D:\graduation_project\ecommerce_rfm\outputs"
+USER, PWD, HOST, DB = "root", "123456", "localhost", "ecommerce_rfm"
+PORT = int(_os.environ.get("MYSQL_PORT", "3307"))   # 随包绿色版 MySQL 默认 3307
+OUT = _ROOT + r"\ecommerce_rfm\outputs"
 
 # ---- 1. 建库 ----
 conn0 = pymysql.connect(host=HOST, port=PORT, user=USER, password=PWD, charset="utf8mb4")
@@ -82,7 +87,7 @@ def fast_load(df, table):
 
 # ---- 2. transactions_raw（原样 541,909）----
 print("导入 transactions_raw ...")
-raw = pd.read_excel(r"D:\graduation_project\ecommerce_rfm\data\raw\Online Retail.xlsx", engine="openpyxl")
+raw = pd.read_excel(_ROOT + r"\ecommerce_rfm\data\raw\Online Retail.xlsx", engine="openpyxl")
 raw["InvoiceNo"] = raw["InvoiceNo"].astype(str)
 raw["StockCode"] = raw["StockCode"].astype(str)
 raw = raw.rename(columns={
@@ -95,7 +100,7 @@ del raw
 
 # ---- 3. transactions_clean（536,641 + 标记）----
 print("导入 transactions_clean ...")
-clean = pd.read_pickle(r"D:\graduation_project\ecommerce_rfm\data\processed\online_retail_clean.pkl")
+clean = pd.read_pickle(_ROOT + r"\ecommerce_rfm\data\processed\online_retail_clean.pkl")
 clean = clean.rename(columns={
     "InvoiceNo": "invoice_no", "StockCode": "stock_code", "Description": "description",
     "Quantity": "quantity", "InvoiceDate": "invoice_date", "UnitPrice": "unit_price",
@@ -111,7 +116,7 @@ del clean
 
 # ---- 4. customer_rfm（4,334）----
 print("导入 customer_rfm ...")
-rfm = pd.read_csv(r"D:\graduation_project\ecommerce_rfm\outputs\rfm\customer_rfm.csv")
+rfm = pd.read_csv(_ROOT + r"\ecommerce_rfm\outputs\rfm\customer_rfm.csv")
 rfm["CustomerID"] = rfm["CustomerID"].astype(int)
 rfm = rfm.rename(columns={"CustomerID": "customer_id", "R": "R", "F": "F", "M": "M"})
 rfm = rfm[["customer_id","R","F","M","last_purchase","first_purchase"]]

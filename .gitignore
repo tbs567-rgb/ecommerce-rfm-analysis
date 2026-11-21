@@ -6,6 +6,12 @@
 /python_env/
 /python_runtime/
 /dbeaver-ce/
+/mysql_portable/
+
+# 本地一次性脚本（构建提交包 / 路径迁移，含本机绝对路径，不进仓库）
+/_build_package.py
+/_make_portable.py
+/.streamlit/
 
 # 数据库备份（118 MB 二进制转储，用 5_restore_mysql.bat 在本地生成）
 /db_backup/
@@ -48,3 +54,6 @@ desktop.ini
 logs/
 /tmp/
 .tmp*/
+
+# 已废弃：路径迁移一次性脚本（改由启动时自动定位）
+/ecommerce_rfm/scripts/15_fix_paths.py

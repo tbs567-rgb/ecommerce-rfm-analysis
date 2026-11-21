@@ -10,10 +10,9 @@
 用法
 ----
 1. 用记事本打开同目录的 info.json，把姓名 / 学号 / 班级 / 指导教师填全
-2. 双击运行  D:\\graduation_project\\8_fill_info.bat
-   或命令行：
-   D:\\graduation_project\\python_env\\Scripts\\python.exe ^
-       D:\\graduation_project\\ecommerce_rfm\\docs\\report\\fill_info.py
+2. 双击运行 03_runtime\\8_fill_info.bat（就在解压目录里，不用改路径）
+   或命令行（在 03_runtime 目录下）：
+   python_env\\Scripts\\python.exe ecommerce_rfm\\docs\\report\\fill_info.py
 3. 只想看会改哪些地方、不写文件：加参数 --dry-run
 
 脚本做的事

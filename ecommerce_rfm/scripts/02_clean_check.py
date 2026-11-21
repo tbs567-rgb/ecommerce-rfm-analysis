@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """02_clean_check.py — 清洗前细节检查：分类查清异常原因，为清洗决策提供依据"""
 import pandas as pd
 
 pd.set_option("display.width", 200)
-RAW = r"D:\graduation_project\ecommerce_rfm\data\raw\Online Retail.xlsx"
+RAW = _ROOT + r"\ecommerce_rfm\data\raw\Online Retail.xlsx"
 
 df = pd.read_excel(RAW, engine="openpyxl")
 df["InvoiceNo"] = df["InvoiceNo"].astype(str)

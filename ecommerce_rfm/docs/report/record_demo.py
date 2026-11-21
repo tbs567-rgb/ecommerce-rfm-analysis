@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[3])
+
 """录制 Streamlit 三页面演示视频。
 
 通过 Edge 的 CDP 真实操作页面（滚动、切换页签），按实际时间戳逐帧捕获，
@@ -24,7 +28,7 @@ URL = "http://localhost:8501"
 W, H = 1440, 810
 FPS = 25
 DURATION = 62
-OUT = r"D:\graduation_project\ecommerce_rfm\outputs\演示录屏-客户价值分析系统.mp4"
+OUT = _ROOT + r"\ecommerce_rfm\outputs\演示录屏-客户价值分析系统.mp4"
 TMP = r"D:\tmp_pdf_lib\frames"
 os.makedirs(TMP, exist_ok=True)
 

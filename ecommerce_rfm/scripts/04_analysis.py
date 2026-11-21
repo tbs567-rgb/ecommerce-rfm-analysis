@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """04_analysis.py — 第5步：统计分析
 口径定义：
 - 真实销售口径（趋势/商品）：非取消 & 非退货 & 数量>0 & 单价>0 & 非特殊编码（含缺客户编号的真实销售行）
@@ -8,8 +12,8 @@
 import pandas as pd
 import os, json
 
-PROC = r"D:\graduation_project\ecommerce_rfm\data\processed\online_retail_clean.pkl"
-OUT = r"D:\graduation_project\ecommerce_rfm\outputs\analysis"
+PROC = _ROOT + r"\ecommerce_rfm\data\processed\online_retail_clean.pkl"
+OUT = _ROOT + r"\ecommerce_rfm\outputs\analysis"
 os.makedirs(OUT, exist_ok=True)
 
 df = pd.read_pickle(PROC)

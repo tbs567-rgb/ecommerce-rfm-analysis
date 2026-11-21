@@ -11,6 +11,9 @@ app.py — 交互式可视化网页（课设第 8 步：Streamlit + Plotly）
 口径：is_valid_purchase=1 AND is_special=0 AND Quantity>0（与 04_analysis.py 一致）
 启动：双击项目根目录 6_open_streamlit.bat
 """
+import os
+import socket
+
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -28,7 +31,23 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-DB_URL = "mysql+pymysql://root:123456@localhost:3306/ecommerce_rfm?charset=utf8mb4"
+def _db_url():
+    """优先用随包内置的绿色版 MySQL(3307)，其次退回本机安装版(3306)。
+    也可用环境变量 RFM_DB_PORT 强制指定端口。"""
+    forced = os.environ.get("RFM_DB_PORT")
+    ports = [forced] if forced else ["3307", "3306"]
+    for p in ports:
+        try:
+            with socket.create_connection(("127.0.0.1", int(p)), timeout=0.4):
+                return ("mysql+pymysql://root:123456@127.0.0.1:%s"
+                        "/ecommerce_rfm?charset=utf8mb4" % p)
+        except OSError:
+            continue
+    return ("mysql+pymysql://root:123456@127.0.0.1:3307"
+            "/ecommerce_rfm?charset=utf8mb4")
+
+
+DB_URL = _db_url()
 
 # 分群配色（与 08_dashboard.py 保持一致）
 COLORS = {
@@ -89,10 +108,11 @@ def check_db() -> bool:
         return True
     except Exception as e:  # noqa: BLE001
         st.error(
-            "**无法连接 MySQL 数据库**（ecommerce_rfm @ localhost:3306，root/123456）\n\n"
+            f"**无法连接 MySQL 数据库**（当前尝试：`{DB_URL.split('@')[-1]}`，root/123456）\n\n"
             f"错误信息：`{e}`\n\n"
-            "排查：① 确认 MySQL 服务已启动；② 双击项目根目录 `5_restore_mysql.bat` 恢复数据；"
-            "③ 若改过密码，请修改 `ecommerce_rfm/app.py` 顶部的 `DB_URL`。"
+            "排查：① 先双击项目根目录 `0_start_mysql.bat` 启动内置数据库；"
+            "② 数据损坏时双击 `5_restore_mysql.bat` 重建；"
+            "③ 若改过密码或端口，设置环境变量 `RFM_DB_PORT` 或修改 `app.py` 顶部 `_db_url()`。"
         )
         return False
 

@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
+import os as _os
+from pathlib import Path as _Path
+_ROOT = str(_Path(__file__).resolve().parents[2])
+
 """01_explore.py — 数据探索：行数、字段、时间范围、缺失值、样例
 UCI Online Retail 数据集（第2步交付：字段说明表、原始数据规模统计）
 """
 import pandas as pd
 import json, os
 
-RAW = r"D:\graduation_project\ecommerce_rfm\data\raw\Online Retail.xlsx"
-OUT = r"D:\graduation_project\ecommerce_rfm\outputs"
+RAW = _ROOT + r"\ecommerce_rfm\data\raw\Online Retail.xlsx"
+OUT = _ROOT + r"\ecommerce_rfm\outputs"
 
 print("读取 Excel（约22MB，需要一点时间）...")
 df = pd.read_excel(RAW, engine="openpyxl")
