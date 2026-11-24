@@ -11,7 +11,10 @@ import zipfile
 
 ROOT = _ROOT + r""
 PROJ = os.path.join(ROOT, "ecommerce_rfm")
-OUT = os.path.join(ROOT, "提交材料")
+# 交付包结构里材料目录在上一层（03_runtime 的兄弟目录 01_materials）；
+# 源项目结构里没有这层，仍用根下的 提交材料/。这样无论在哪跑，都只产出一份材料。
+_PKG_OUT = os.path.join(os.path.dirname(ROOT), "01_materials")
+OUT = _PKG_OUT if os.path.isdir(_PKG_OUT) else os.path.join(ROOT, "提交材料")
 os.makedirs(OUT, exist_ok=True)
 
 # ------------------------------------------------------------------ 源码 zip

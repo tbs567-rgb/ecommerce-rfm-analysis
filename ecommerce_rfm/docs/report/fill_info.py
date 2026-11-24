@@ -37,7 +37,10 @@ DOCX = DOCS / "课程设计报告-基于RFM与K-means的电商客户价值分析
 PPTX = DOCS / "答辩PPT-电商客户价值分析.pptx"
 DOCX_PDF = HERE / "report_preview.pdf"
 PPTX_PDF = HERE / "ppt_preview.pdf"
-OUT = ROOT / "提交材料"
+# 交付包结构里材料目录在上一层（03_runtime 的兄弟目录 01_materials）；
+# 源项目结构里没有这层，仍用根下的 提交材料/。这样无论在哪跑，都只产出一份材料。
+_PKG_OUT = ROOT.parent / "01_materials"
+OUT = _PKG_OUT if _PKG_OUT.is_dir() else ROOT / "提交材料"
 
 DRY = "--dry-run" in sys.argv
 PLACEHOLDERS = [
